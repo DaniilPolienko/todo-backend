@@ -64,7 +64,6 @@ app.post('/items',
 
 app.delete('/:id', (req, res)=> {
   const itemToBeDeleted = items.find(el => el.uuid == req.params.id)
-  console.log(itemToBeDeleted)
   if (itemToBeDeleted == null) {
     return res.status(404).send("Id does not exist");
   }
@@ -72,8 +71,61 @@ app.delete('/:id', (req, res)=> {
     items = items.filter(item => item.uuid !== req.params.id)
     res.send(items);
   }
-  
    
+})
+
+app.patch('/:id',
+  // body('name').exists().isString(),
+
+  // body('done').isBoolean() || body('done').exists(),
+
+  body('name').custom(({req}) => {
+    if (req.body.name == undefined) {
+      return true
+    }
+    else {
+      if (typeof req.body.name === 'string') {
+        return true
+      }
+      else {
+        throw new Error('Invalid fields in request');
+      }
+    }
+  }),
+
+  body('done').custom(({req}) => {
+    if (req.body.done == undefined) {
+      return true
+    }
+    else {
+      if (typeof req.body.done === 'boolean') {
+        return true
+      }
+      else {
+        throw new Error('Invalid fields in request');
+      }
+    }
+  }),
+
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const itemToBeEdited = items.find(el => el.uuid == req.params.id)
+    if (itemToBeEdited == null) {
+      return res.status(404).send("Id does not exist");
+    }
+
+    if (req.body.name != null) {
+      itemToBeEdited.name = req.body.name
+    }
+
+    if (req.body.done != null) {
+      itemToBeEdited.done = req.body.done
+    }
+    res.send(itemToBeEdited)
 })
 
 app.listen(port, () => {
