@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const { body, validationResult } = require('express-validator');
 const uuid = require('uuid/v4')
 const app = express()
 const port = 3008
@@ -36,12 +37,23 @@ app.get('/items', (req, res) => {
   res.send(newItems)
 })
 
-app.post('/items', function (req, res) {
-  console.log(uuid)
+app.post('/items',
+
+  body('name').isString(),
+  body('done').isBoolean(),
+
+
+  (req, res) => {
+  
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   const item = {
     uuid: uuid(),
     name: req.body.name,
-    done: req.body.done,
+    done: Boolean(req.body.done),
     createdAt: new Date()
   }
     items.push(item)
