@@ -40,8 +40,8 @@ app.get('/items', (req, res) => {
 
 app.post('/items',
 
-  body('name').isString(),
-  body('done').isBoolean(),
+  body('name').optional().isString(),
+  body('done').optional().isBoolean(),
 
 
   (req, res) => {
@@ -75,37 +75,11 @@ app.delete('/:id', (req, res)=> {
 })
 
 app.patch('/:id',
-  // body('name').exists().isString(),
 
-  // body('done').isBoolean() || body('done').exists(),
 
-  body('name').custom(({req}) => {
-    if (req.body.name == undefined) {
-      return true
-    }
-    else {
-      if (typeof req.body.name === 'string') {
-        return true
-      }
-      else {
-        throw new Error('Invalid fields in request');
-      }
-    }
-  }),
+  body('name').optional().isString(),
+  body('done').optional().isBoolean(),
 
-  body('done').custom(({req}) => {
-    if (req.body.done == undefined) {
-      return true
-    }
-    else {
-      if (typeof req.body.done === 'boolean') {
-        return true
-      }
-      else {
-        throw new Error('Invalid fields in request');
-      }
-    }
-  }),
 
   (req, res) => {
     const errors = validationResult(req);
