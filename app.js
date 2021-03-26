@@ -1,7 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const { body, validationResult } = require('express-validator');
-const uuid = require('uuid/v4')
+const uuid = require('uuid/v4');
+const e = require('express');
 const app = express()
 const port = 3008
 
@@ -59,11 +60,20 @@ app.post('/items',
     items.push(item)
     res.send(item)
   });
+
+
 app.delete('/:id', (req, res)=> {
-  console.log(req.params.id)
-   items = items.filter(item => item.uuid !== req.params.id)
-   res.send('Delete!');
-   console.log(items);
+  const itemToBeDeleted = items.find(el => el.uuid == req.params.id)
+  console.log(itemToBeDeleted)
+  if (itemToBeDeleted == null) {
+    return res.status(404).send("Id does not exist");
+  }
+  else {
+    items = items.filter(item => item.uuid !== req.params.id)
+    res.send(items);
+  }
+  
+   
 })
 
 app.listen(port, () => {
