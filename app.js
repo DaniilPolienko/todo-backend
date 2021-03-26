@@ -1,0 +1,59 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+const uuid = require('uuid/v4')
+const app = express()
+const port = 3008
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+
+let items = []
+let newItems = []
+app.get('/items', (req, res) => {
+  console.log(req.query)
+  switch (req.query.sort) {
+    case 'asc':
+      newItems = items
+      break;
+    case 'desc':
+    newItems = items.reverse()
+      break;
+    default: 
+      newItems = items
+  }
+  switch (req.query.filter) {
+    case 'done':
+      newItems = items.filter(item => item.done == true)
+      break;
+    case 'undone':
+      newItems = items.filter(item=>item.done == false)
+      break;
+    default:
+      newItems = items
+      break;
+  }
+  res.send(newItems)
+})
+
+app.post('/items', function (req, res) {
+  console.log(uuid)
+  const item = {
+    uuid: uuid(),
+    name: req.body.name,
+    done: req.body.done,
+    createdAt: new Date()
+  }
+    items.push(item)
+    res.send(item)
+  });
+app.delete('/:id', (req, res)=> {
+  console.log(req.params.id)
+   items = items.filter(item => item.uuid !== req.params.id)
+   res.send('Delete!');
+   console.log(items);
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
