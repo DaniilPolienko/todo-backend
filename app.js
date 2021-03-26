@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const { body, validationResult } = require('express-validator');
 const uuid = require('uuid/v4');
 const e = require('express');
+const fs = require('fs')
 const app = express()
 const port = 3008
 
@@ -11,28 +12,28 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 
 let items = []
-let newItems = []
+let tasks  = fs.readFileSync('tasks.json', 'utf8')
 app.get('/items', (req, res) => {
-  console.log(req.query)
+  let newItems = []
   switch (req.query.sort) {
     case 'asc':
-      newItems = items
+      newItems = tasks
       break;
     case 'desc':
-    newItems = items.reverse()
+    newItems = tasks.reverse()
       break;
     default: 
-      newItems = items
+      newItems = tasks
   }
   switch (req.query.filter) {
     case 'done':
-      newItems = items.filter(item => item.done == true)
+      newItems = tasks.filter(item => item.done == true)
       break;
     case 'undone':
-      newItems = items.filter(item=>item.done == false)
+      newItems = tasks.filter(item=>item.done == false)
       break;
     default:
-      newItems = items
+      newItems = tasks
       break;
   }
   res.send(newItems)
@@ -57,20 +58,27 @@ app.post('/items',
     done: Boolean(req.body.done),
     createdAt: new Date()
   }
-    items.push(item)
+   
+    const json = JSON.parse(tasks)     
+
+    json.push(item)
+
+    fs.writeFileSync('tasks.json', JSON.stringify(json))
     res.send(item)
   });
 
 
 app.delete('/:id', (req, res)=> {
-  const itemToBeDeleted = items.find(el => el.uuid == req.params.id)
-  if (itemToBeDeleted == null) {
-    return res.status(404).send("Id does not exist");
+  
+  try {     
+    const json = JSON.parse(tasks)
+  tasks = json.filter(item => item.uuid !== req.params.id)
+  res.send(tasks);
   }
-  else {
-    items = items.filter(item => item.uuid !== req.params.id)
-    res.send(items);
+  catch {
+    return res.status(404).send("Task not found");
   }
+  
    
 })
 
@@ -79,7 +87,6 @@ app.patch('/:id',
 
   body('name').optional().isString(),
   body('done').optional().isBoolean(),
-
 
   (req, res) => {
     const errors = validationResult(req);
