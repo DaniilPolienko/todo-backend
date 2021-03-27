@@ -14,25 +14,26 @@ app.use(bodyParser.urlencoded({ extended: true }))
 let tasks  = fs.readFileSync('tasks.json', 'utf8')
 app.get('/items', (req, res) => {
   let newItems = []
+  const json = JSON.parse(tasks)  
   switch (req.query.sort) {
     case 'asc':
-      newItems = tasks
+      newItems = json
       break;
     case 'desc':
-    newItems = tasks.reverse()
+    newItems = json.reverse()
       break;
     default: 
-      newItems = tasks
+      newItems = json
   }
   switch (req.query.filter) {
     case 'done':
-      newItems = tasks.filter(item => item.done == true)
+      newItems = json.filter(item => item.done == true)
       break;
     case 'undone':
-      newItems = tasks.filter(item=>item.done == false)
+      newItems = json.filter(item=>item.done == false)
       break;
     default:
-      newItems = tasks
+      newItems = json
       break;
   }
   res.send(newItems)
@@ -82,8 +83,6 @@ app.delete('/:id', (req, res)=> {
 })
 
 app.patch('/:id',
-
-
   body('name').optional().isString(),
   body('done').optional().isBoolean(),
 
