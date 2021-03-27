@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const { body, validationResult } = require('express-validator');
-const uuid = require('uuid/v4');
+const uuid = require('uuid/v3');
 const e = require('express');
 const fs = require('fs')
 const app = express()
@@ -11,7 +11,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-let items = []
 let tasks  = fs.readFileSync('tasks.json', 'utf8')
 app.get('/items', (req, res) => {
   let newItems = []
@@ -71,7 +70,7 @@ app.post('/items',
 app.delete('/:id', (req, res)=> {
   
   try {     
-    const json = JSON.parse(tasks)
+  const json = JSON.parse(tasks)
   tasks = json.filter(item => item.uuid !== req.params.id)
   res.send(tasks);
   }
@@ -94,7 +93,8 @@ app.patch('/:id',
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const itemToBeEdited = items.find(el => el.uuid == req.params.id)
+    const json = JSON.parse(tasks)
+    const itemToBeEdited = json.find(el => el.uuid == req.params.id)
     if (itemToBeEdited == null) {
       return res.status(404).send("Id does not exist");
     }
@@ -106,6 +106,7 @@ app.patch('/:id',
     if (req.body.done != null) {
       itemToBeEdited.done = req.body.done
     }
+    fs.writeFileSync('tasks.json', JSON.stringify(json))
     res.send(itemToBeEdited)
 })
 
