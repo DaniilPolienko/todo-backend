@@ -8,8 +8,8 @@ const uuid = require('uuid/v4');
 
 const post = Router.post('/',
 
-  body('name').optional().isString(),
-  body('done').optional().isBoolean(),
+  body('name').isString(),
+  body('done').isBoolean(),
 
 
   (req, res) => {
