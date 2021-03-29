@@ -12,6 +12,6 @@ app.use('/item', require('./controllers/item.post'))
 app.use('/item', require('./controllers/item.delete'))
 app.use('/item', require('./controllers/item.patch'))
 
-app.listen(process.env.PORT || 3008, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
