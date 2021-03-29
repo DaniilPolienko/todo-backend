@@ -4,8 +4,8 @@ const e = require('express')
 const path = './tasks.json'
 const Router = e.Router()
 const { body, validationResult } = require('express-validator');
-const uuid = require('uuid/v4');
-
+//const uuid = require('uuid/v4');
+import { v4 as uuidv4 } from 'uuid'
 const post = Router.post('/',
 
   body('name').isString(),
@@ -20,7 +20,7 @@ const post = Router.post('/',
   }
   let tasks  = fs.readFileSync(path, 'utf8')
   const item = {
-    uuid: uuid(),
+    uuid: uuidv4(),
     name: req.body.name,
     done: Boolean(req.body.done),
     createdAt: new Date()
@@ -30,5 +30,4 @@ const post = Router.post('/',
     fs.writeFileSync(path, JSON.stringify(json))
     res.send(item)
   });
-
   module.exports = post
