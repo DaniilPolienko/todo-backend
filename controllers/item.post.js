@@ -5,7 +5,7 @@ const path = './tasks.json'
 const Router = e.Router()
 const { body, validationResult } = require('express-validator');
 //const uuid = require('uuid/v4');
-import { v4 as uuidv4 } from 'uuid'
+//import { v4 as uuidv4 } from 'uuid'
 const post = Router.post('/',
 
   body('name').isString(),
@@ -20,7 +20,7 @@ const post = Router.post('/',
   }
   let tasks  = fs.readFileSync(path, 'utf8')
   const item = {
-    uuid: uuidv4(),
+    uuid: Date.now().toString(36) + Math.random().toString(36).substring(2),
     name: req.body.name,
     done: Boolean(req.body.done),
     createdAt: new Date()
