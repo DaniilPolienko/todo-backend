@@ -1,6 +1,5 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const e = require('express');
 const app = express()
 const port = 3008
 
@@ -13,6 +12,6 @@ app.use('/item', require('./controllers/item.post'))
 app.use('/item', require('./controllers/item.delete'))
 app.use('/item', require('./controllers/item.patch'))
 
-app.listen(port, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
