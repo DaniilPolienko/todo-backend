@@ -3,7 +3,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-
+const path = './tasks.json'
+const emptyArray = []
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -16,7 +17,7 @@ if (fs.existsSync(path)) console.log('The path exists.');
     });
   fs.writeFileSync(path, JSON.stringify(emptyArray))
   }
-  
+
 app.use('/items', require('./controllers/items.get'))
 app.use('/item', require('./controllers/item.post'))
 app.use('/item', require('./controllers/item.delete'))
