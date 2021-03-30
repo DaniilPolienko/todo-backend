@@ -13,7 +13,7 @@ const post = Router.post('/',
 
 
   (req, res) => {
-  
+    res.set('Access-Control-Allow-Origin', '*')
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });

@@ -5,6 +5,7 @@ const path = './tasks.json'
 const Router = e.Router()
 
 const remove = Router.delete('/:id', (req, res)=> {
+    res.set('Access-Control-Allow-Origin', '*')
     let tasks  = fs.readFileSync(path, 'utf8')
   
     const json = JSON.parse(tasks)

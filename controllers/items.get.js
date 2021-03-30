@@ -7,6 +7,7 @@ const Router = e.Router()
 
 
 const get = Router.get('/', (req, res) => {
+   res.set('Access-Control-Allow-Origin', '*')
     let tasks  = fs.readFileSync(path, 'utf8')
     let newItems = []
     switch (req.query.sort) {
