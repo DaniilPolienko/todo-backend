@@ -1,11 +1,14 @@
 'use strict'
 // const dotenv = require('dotenv').config()
 const fs = require('fs')
+const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const path = './tasks.json'
 const emptyArray = []
+
+app.use(cors())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
