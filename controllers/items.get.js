@@ -1,38 +1,25 @@
-'use strict'
-const fs = require('fs')
-const e = require('express')
-const path = './tasks.json'
-const Router = e.Router()
+const e = require("express");
+const Router = e.Router();
+const { Task } = require("../models");
 
+const get = Router.get("/", async (req, res) => {
+  try {
+    const filter = {
+      where: {},
+      order: [],
+    };
+    if (req.query.done) filter.where.done = req.query.done;
+    if (req.query.sort)
+      filter.order.push([
+        "createdAt",
+        req.query.sort === "asc" ? "ASC" : "DESC",
+      ]);
 
+    const items = await Task.findAll(filter);
 
-const get = Router.get('/', (req, res) => {
-    let tasks  = fs.readFileSync(path, 'utf8')
-    let newItems = []
-    const json = JSON.parse(tasks)  
-    console.log(req.query.params)
-    switch (req.query.sort) {
-      case 'asc':
-        newItems = json
-        break;
-      case 'desc':
-      newItems = json.reverse()
-        break;
-      default: 
-        newItems = json
-    }
-    switch (req.query.filter) {
-      case 'done':
-        newItems = json.filter(item => item.done == true)
-        break;
-      case 'undone':
-        newItems = json.filter(item=>item.done == false)
-        break;
-      default:
-        newItems = json
-        break;
-    }
-    res.send(newItems)
-  
-  })
-  module.exports = get
+    res.send(items);
+  } catch (err) {
+    console.log(err);
+  }
+});
+module.exports = get;
