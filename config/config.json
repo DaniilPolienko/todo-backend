@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "user",
+    "database": "todosdb",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
