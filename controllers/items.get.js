@@ -15,9 +15,8 @@ const get = Router.get("/", async (req, res) => {
         req.query.sort === "asc" ? "ASC" : "DESC",
       ]);
 
-    console.log("---------------------------------", filter);
     const items = await Task.findAll(filter);
-    console.log("---------------------------", items);
+
     res.send(items);
   } catch (err) {
     console.log(err);
