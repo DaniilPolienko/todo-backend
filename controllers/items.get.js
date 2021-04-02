@@ -2,10 +2,11 @@ const e = require("express");
 const Router = e.Router();
 const { Task } = require("../models");
 const { query, validationResult } = require("express-validator");
-//query validation
+const amountOfTasks = 5;
 const get = Router.get(
   "/",
   query("filter").optional().isBoolean(),
+  query("page").isNumeric(),
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -24,7 +25,12 @@ const get = Router.get(
           req.query.sort === "asc" ? "ASC" : "DESC",
         ]);
 
-      const items = await Task.findAll(filter);
+      const items = await Task.findAndCountAll({
+        limit: amountOfTasks,
+        offset: (req.query.page - 1) * amountOfTasks,
+        where: filter.where,
+        order: filter.order,
+      });
 
       res.send(items);
     } catch (err) {
