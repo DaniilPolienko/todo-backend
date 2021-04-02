@@ -16,7 +16,7 @@ const post = Router.post("/", body("message").isString(), async (req, res) => {
     const item = await Task.create({ message: req.body.message });
     res.send(item);
   } catch (err) {
-    return res.status(400).send("Task already exists");
+    return res.status(400).send(err.message);
   }
 });
 module.exports = post;

@@ -15,6 +15,9 @@ const patch = Router.patch(
         return res.status(400).json({ errors: errors.array() });
       }
 
+      const task = await Task.findOne({ where: { message: req.body.message } });
+      if (task) return res.status(400).send("Task already exists");
+
       const itemToBeEdited = await Task.update(req.body, {
         where: { id: req.params.id },
         returning: true,
