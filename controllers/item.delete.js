@@ -3,9 +3,15 @@ const Router = e.Router();
 const { Task } = require("../models");
 
 const remove = Router.delete("/:id", async (req, res) => {
-  const itemToBeDeleted = await Task.findOne({ where: { id: req.params.id } });
-  itemToBeDeleted.destroy();
-  res.send(itemToBeDeleted);
+  try {
+    const itemToBeDeleted = await Task.findOne({
+      where: { id: req.params.id },
+    });
+    itemToBeDeleted.destroy();
+    res.send(itemToBeDeleted);
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
 });
 
 module.exports = remove;
