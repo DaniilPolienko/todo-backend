@@ -1,25 +1,20 @@
-'use strict'
-// const dotenv = require('dotenv').config()
-const express = require('express')
-const bodyParser = require('body-parser')
-const fs = require('fs')
-const app = express()
-const path = './tasks.json'
-const emptyArray = []
-const db = require('./models')
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
 
+const db = require("./models");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/items', require('./controllers/items.get'))
-app.use('/item', require('./controllers/item.post'))
-app.use('/item', require('./controllers/item.delete'))
-app.use('/item', require('./controllers/item.patch'))
+app.use("/items", require("./controllers/items.get"));
+app.use("/item", require("./controllers/item.post"));
+app.use("/item", require("./controllers/item.delete"));
+app.use("/item", require("./controllers/item.patch"));
 
 const port = process.env.PORT || 3000;
 
-db.sequelize.sync().then((req)=>{
+db.sequelize.sync().then((req) => {
   app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-  })
-})
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
+});
