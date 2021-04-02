@@ -1,37 +1,28 @@
+const e = require("express");
+const Router = e.Router();
+const { body, validationResult } = require("express-validator");
+const { Task } = require("../models");
+const patch = Router.patch(
+  "/:id",
 
-const fs = require('fs')
-const e = require('express')
-const path = './tasks.json'
-const Router = e.Router()
-const { body, validationResult } = require('express-validator');
+  body("name").optional().isString(),
+  body("done").optional().isBoolean(),
 
-const patch = Router.patch('/:id',
-
-  body('name').optional().isString(),
-  body('done').optional().isBoolean(),
-
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    let tasks  = fs.readFileSync(path, 'utf8')
-    const json = JSON.parse(tasks)
-  
-    const itemToBeEdited = json.find(el => el.uuid == req.params.id)
-    if (itemToBeEdited == null) {
-      return res.status(404).send("Id does not exist");
-    }
+    const edit = {
+      message: req.body.name,
+      done: req.body.done,
+    };
+    const itemToBeEdited = await Task.findOne({ where: { id: req.params.id } });
+    itemToBeEdited.message = edit.message || itemToBeEdited.message;
+    itemToBeEdited.done = edit.done || itemToBeEdited.done;
+    await itemToBeEdited.save();
+    res.send(itemToBeEdited);
+  }
+);
 
-    if (req.body.name != null) {
-      itemToBeEdited.name = req.body.name
-    }
-
-    if (req.body.done != null) {
-      itemToBeEdited.done = req.body.done
-    }
-    fs.writeFileSync(path, JSON.stringify(json))
-    res.send(itemToBeEdited)
-})
-
-module.exports = patch
+module.exports = patch;
