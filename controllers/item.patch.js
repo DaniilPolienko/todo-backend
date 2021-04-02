@@ -5,7 +5,7 @@ const { Task } = require("../models");
 const patch = Router.patch(
   "/:id",
 
-  body("name").optional().isString(),
+  body("message").optional().isString(),
   body("done").optional().isBoolean(),
 
   async (req, res) => {
