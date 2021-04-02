@@ -3,7 +3,7 @@ const Router = e.Router();
 const { body, validationResult } = require("express-validator");
 const { Task } = require("../models");
 //message validation
-const post = Router.post("/", body("name").isString(), async (req, res) => {
+const post = Router.post("/", body("message").isString(), async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -11,7 +11,7 @@ const post = Router.post("/", body("name").isString(), async (req, res) => {
     }
 
     const item = await Task.create({
-      message: req.body.name,
+      message: req.body.message,
     });
     res.send(item);
   } catch (err) {
