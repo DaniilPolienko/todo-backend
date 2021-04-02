@@ -9,19 +9,25 @@ const patch = Router.patch(
   body("done").optional().isBoolean(),
 
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      const edit = {
+        message: req.body.name,
+        done: req.body.done,
+      };
+      const itemToBeEdited = await Task.findOne({
+        where: { id: req.params.id },
+      });
+      itemToBeEdited.message = edit.message || itemToBeEdited.message;
+      itemToBeEdited.done = edit.done || itemToBeEdited.done;
+      await itemToBeEdited.save();
+      res.send(itemToBeEdited);
+    } catch (err) {
+      return res.status(400).send(err.message);
     }
-    const edit = {
-      message: req.body.name,
-      done: req.body.done,
-    };
-    const itemToBeEdited = await Task.findOne({ where: { id: req.params.id } });
-    itemToBeEdited.message = edit.message || itemToBeEdited.message;
-    itemToBeEdited.done = edit.done || itemToBeEdited.done;
-    await itemToBeEdited.save();
-    res.send(itemToBeEdited);
   }
 );
 
