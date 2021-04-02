@@ -14,16 +14,11 @@ const patch = Router.patch(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const edit = {
-        message: req.body.name,
-        done: req.body.done,
-      };
-      const itemToBeEdited = await Task.findOne({
+
+      const itemToBeEdited = await Task.update(req.body, {
         where: { id: req.params.id },
+        returning: true,
       });
-      itemToBeEdited.message = edit.message || itemToBeEdited.message;
-      itemToBeEdited.done = edit.done || itemToBeEdited.done;
-      await itemToBeEdited.save();
       res.send(itemToBeEdited);
     } catch (err) {
       return res.status(400).send(err.message);

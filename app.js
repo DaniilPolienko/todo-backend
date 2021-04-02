@@ -13,8 +13,6 @@ app.use("/item", require("./controllers/item.patch"));
 
 const port = process.env.PORT || 3000;
 
-db.sequelize.sync().then((req) => {
-  app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-  });
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
 });

@@ -1,4 +1,3 @@
-const { Task } = require("../models");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.changeColumn("Tasks", "message", {
@@ -18,6 +17,7 @@ module.exports = {
       validate: {
         notEmpty: true,
       },
+      unique: false,
     });
   },
 };
