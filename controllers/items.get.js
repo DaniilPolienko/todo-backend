@@ -19,7 +19,7 @@ const get = Router.get("/", async (req, res) => {
 
     res.send(items);
   } catch (err) {
-    console.log(err);
+    return res.status(400).send(err.message);
   }
 });
 module.exports = get;
