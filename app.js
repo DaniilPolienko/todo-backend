@@ -15,7 +15,7 @@ app.use("/item", require("./controllers/item.patch"));
 app.use("/signup", require("./controllers/user.signup"));
 app.use("/login", require("./controllers/user.login"));
 
-const port = process.env.PORT || 3006;
+const port = process.env.PORT || 3010;
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
