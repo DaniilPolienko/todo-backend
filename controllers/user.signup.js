@@ -42,7 +42,9 @@ const postUser = Router.post(
           password: hash,
         });
         const token = createToken(userCreate.id);
-        res.cookie("jwt", token, { httpOnly: true, maxAge: 300 });
+        localStorage.setItem("token", token),
+          localStorage.setItem("id", userCreate.id);
+        //res.cookie("jwt", token, { httpOnly: true, maxAge: 300 });
         res.json(userCreate.id);
       });
     } catch (err) {
