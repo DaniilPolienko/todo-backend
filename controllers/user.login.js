@@ -26,7 +26,7 @@ const postUser = Router.post(
       if (!bcrypt.compareSync(req.body.password, user.password))
         throw new Error("Wrong username/password");
 
-      const token = jwt.sign({ id: user.id }, "secret", { expiresIn: 300 });
+      const token = jwt.sign({ id: user.id }, "secret", { expiresIn: 20 });
 
       res.json({
         token,
