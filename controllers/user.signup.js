@@ -4,6 +4,13 @@ const { body, validationResult } = require("express-validator");
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+
+const createToken = (id) => {
+  return jwt.sign({ id }, "secret", {
+    expiresIn: 300,
+  });
+};
 
 const postUser = Router.post(
   "/",
@@ -34,7 +41,9 @@ const postUser = Router.post(
           email: req.body.email,
           password: hash,
         });
-        res.send(userCreate);
+        const token = createToken(userCreate.id);
+        res.cookie("jwt", token, { httpOnly: true, maxAge: 300 });
+        res.json(userCreate.id);
       });
     } catch (err) {
       return res.status(400).send(err.message);
