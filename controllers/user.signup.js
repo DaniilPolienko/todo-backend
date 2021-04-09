@@ -35,13 +35,12 @@ const postUser = Router.post(
           email: req.body.email,
           password: hash,
         });
+
         const token = jwt.sign({ id: userCreate.id }, "secret", {
           expiresIn: 300,
         });
-        localStorage.setItem("token", token),
-          localStorage.setItem("id", userCreate.id);
 
-        res.json({
+        res.send({
           token,
           result: {
             id: userCreate.id,
