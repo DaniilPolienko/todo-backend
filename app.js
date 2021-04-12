@@ -2,11 +2,18 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
-
+//remove pagination
+////check token when page is reloaded
+////redirect to auth when token is invalid
+//middleware
 const db = require("./models");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(function (req, res, next) {
+  console.log("Time:", Date.now());
+  next();
+});
 app.use("/items", require("./controllers/items.get"));
 app.use("/item", require("./controllers/item.post"));
 app.use("/item", require("./controllers/item.delete"));
