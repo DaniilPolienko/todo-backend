@@ -34,7 +34,7 @@ const postUser = Router.post(
         });
 
         const token = jwt.sign({ id: userCreate.id }, "secret", {
-          expiresIn: 300,
+          expiresIn: 20,
         });
 
         res.send({
