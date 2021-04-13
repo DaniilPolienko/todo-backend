@@ -19,15 +19,15 @@ const patch = Router.patch(
         const task = await Task.findOne({
           where: { message: req.body.message },
         });
-        if (task) return res.status(400).send("Task already exists");
+        if (task) throw new Error("Task already exists");
       }
       const itemToBeEdited = await Task.update(req.query, {
         where: { id: req.query.id },
         returning: true,
       });
       res.send(itemToBeEdited);
-    } catch (err) {
-      return res.status(400).send(err.message);
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
     }
   }
 );
