@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 //remove pagination
 ////check token when page is reloaded
 ////redirect to auth when token is invalid
@@ -10,8 +11,16 @@ const db = require("./models");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(function (req, res, next) {
-  console.log("Time:", Date.now());
+app.use("/item", function (req, res, next) {
+  try {
+    const token = req.headers.authorization;
+    const decoded = jwt.decode(token, { complete: true });
+    const expireTime = decoded.payload.exp;
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (currentTime >= expireTime) throw new Error("Token is expired");
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
   next();
 });
 app.use("/items", require("./controllers/items.get"));

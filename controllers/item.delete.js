@@ -2,10 +2,10 @@ const e = require("express");
 const Router = e.Router();
 const { Task } = require("../models");
 
-const remove = Router.delete("/:id", async (req, res) => {
+const remove = Router.delete("/", async (req, res) => {
   try {
     const itemToBeDeleted = await Task.findOne({
-      where: { id: req.params.id },
+      where: { id: req.query.id },
     });
     itemToBeDeleted.destroy();
     res.send(itemToBeDeleted);

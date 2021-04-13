@@ -13,8 +13,10 @@ const post = Router.post("/", body("message").isString(), async (req, res) => {
 
     const task = await Task.findOne({ where: { message: req.body.message } });
     if (task) throw new Error("Task already exists");
+
     const token = req.headers.authorization;
     const decoded = jwt.decode(token, { complete: true });
+
     const item = await Task.create({
       uuid: decoded.payload.id,
       message: req.body.message,
