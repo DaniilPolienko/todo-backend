@@ -3,7 +3,7 @@ const Router = e.Router();
 const { body, validationResult } = require("express-validator");
 const { Task } = require("../models");
 const patch = Router.patch(
-  "/:id",
+  "/",
 
   body("message").optional().isString(),
   body("done").optional().isBoolean(),
@@ -21,8 +21,8 @@ const patch = Router.patch(
         });
         if (task) return res.status(400).send("Task already exists");
       }
-      const itemToBeEdited = await Task.update(req.body, {
-        where: { id: req.params.id },
+      const itemToBeEdited = await Task.update(req.query, {
+        where: { id: req.query.id },
         returning: true,
       });
       res.send(itemToBeEdited);
