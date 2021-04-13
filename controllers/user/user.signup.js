@@ -33,7 +33,7 @@ const postUser = Router.post(
           password: hash,
         });
 
-        const token = jwt.sign({ id: userCreate.id }, "secret", {
+        const token = jwt.sign({ id: userCreate.id }, process.env.SECRET, {
           expiresIn: 300,
         });
 

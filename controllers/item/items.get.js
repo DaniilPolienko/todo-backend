@@ -17,11 +17,8 @@ const get = Router.get(
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const token = req.headers.authorization;
-      const decoded = jwt.decode(token, { complete: true });
-      console.log(decoded.payload.id);
       const filter = {
-        where: { uuid: decoded.payload.id },
+        where: { uuid: res.locals.id },
         order: [],
       };
 
