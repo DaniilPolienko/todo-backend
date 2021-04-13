@@ -5,6 +5,7 @@ module.exports = function (req, res, next) {
     const token = req.headers.authorization;
     if (!token) throw new Error("Access Denied");
     const decoded = jwt.decode(token, { complete: true });
+    if (!decoded) throw new Error("Invalid token");
     const expireTime = decoded.payload.exp;
     const currentTime = Math.floor(Date.now() / 1000);
     if (currentTime >= expireTime) throw new Error("Token is expired");
