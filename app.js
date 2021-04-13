@@ -11,15 +11,17 @@ const db = require("./models");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use("/item", function (req, res, next) {
+
+app.use("/item(s)", function (req, res, next) {
   try {
     const token = req.headers.authorization;
+    if (!token) throw new Error("Access Denied");
     const decoded = jwt.decode(token, { complete: true });
     const expireTime = decoded.payload.exp;
     const currentTime = Math.floor(Date.now() / 1000);
     if (currentTime >= expireTime) throw new Error("Token is expired");
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(401).json({ error: error.message });
   }
   next();
 });
