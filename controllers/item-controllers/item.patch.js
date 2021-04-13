@@ -1,8 +1,8 @@
 const e = require("express");
 const Router = e.Router();
 const { body, validationResult } = require("express-validator");
-const { Task } = require("../models");
-const authorization = require("../authorization");
+const { Task } = require("../../models");
+const authorization = require("../../authorization");
 const patch = Router.patch(
   "/",
   authorization,

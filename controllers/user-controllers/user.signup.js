@@ -1,7 +1,7 @@
 const e = require("express");
 const Router = e.Router();
 const { check, validationResult } = require("express-validator");
-const { User } = require("../models");
+const { User } = require("../../models");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
@@ -34,7 +34,7 @@ const postUser = Router.post(
         });
 
         const token = jwt.sign({ id: userCreate.id }, "secret", {
-          expiresIn: 20,
+          expiresIn: 300,
         });
 
         res.send({

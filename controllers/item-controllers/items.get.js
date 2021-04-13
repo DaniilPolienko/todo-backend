@@ -1,10 +1,10 @@
 const e = require("express");
 const Router = e.Router();
-const { Task } = require("../models");
+const { Task } = require("../../models");
 const { query, validationResult } = require("express-validator");
 const amountOfTasks = 5;
 const jwt = require("jsonwebtoken");
-const authorization = require("../authorization");
+const authorization = require("../../authorization");
 const get = Router.get(
   "/",
   authorization,

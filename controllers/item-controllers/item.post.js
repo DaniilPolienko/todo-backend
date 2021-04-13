@@ -1,9 +1,9 @@
 const e = require("express");
 const Router = e.Router();
 const { body, validationResult } = require("express-validator");
-const { Task } = require("../models");
+const { Task } = require("../../models");
 const jwt = require("jsonwebtoken");
-const authorization = require("../authorization");
+const authorization = require("../../authorization");
 
 const post = Router.post(
   "/",

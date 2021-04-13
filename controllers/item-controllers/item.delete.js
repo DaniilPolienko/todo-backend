@@ -1,7 +1,7 @@
 const e = require("express");
 const Router = e.Router();
-const { Task } = require("../models");
-const authorization = require("../authorization");
+const { Task } = require("../../models");
+const authorization = require("../../authorization");
 const remove = Router.delete("/", authorization, async (req, res) => {
   try {
     const itemToBeDeleted = await Task.findOne({
