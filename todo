@@ -1,4 +1,4 @@
-Use controllers collector as in docs
+//Use controllers collector as in docs
 
 Set up sequelize env to work with the local database (use config.js instead of the config.json file)
 Readme.md with the project setup process/description
