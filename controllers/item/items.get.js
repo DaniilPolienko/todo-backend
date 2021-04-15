@@ -3,7 +3,8 @@ const Router = e.Router();
 const { Task } = require("../../models");
 const { query, validationResult } = require("express-validator");
 const amountOfTasks = 5;
-const authorization = require("../../authorization");
+const authorization = require("../../middlewear/authorization");
+
 const get = Router.get(
   "/items",
   authorization,
