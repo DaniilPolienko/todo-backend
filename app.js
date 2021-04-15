@@ -2,19 +2,31 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
-
+const klawSync = require("klaw-sync");
+const path = require("path");
 const db = require("./models");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use("/items", require("./controllers/item/items.get"));
-app.use("/item", require("./controllers/item/item.post"));
-app.use("/item", require("./controllers/item/item.delete"));
-app.use("/item", require("./controllers/item/item.patch"));
-app.use("/signup", require("./controllers/user/user.signup"));
-app.use("/login", require("./controllers/user/user.login"));
+async function useControllers() {
+  const paths = klawSync("./controllers", { nodir: true });
+  let controllersCount = 0;
+  paths.forEach((file) => {
+    if (
+      path.basename(file.path)[0] === "_" ||
+      path.basename(file.path)[0] === "."
+    )
+      return;
+    app.use("/", require(file.path));
+    controllersCount++;
+    console.log(file.path);
+  });
 
+  console.log(`Total controllers: ${controllersCount}`);
+}
+
+useControllers();
 const port = process.env.PORT || 3013;
 
 app.listen(port, () => {

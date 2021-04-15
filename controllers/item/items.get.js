@@ -6,7 +6,7 @@ const amountOfTasks = 5;
 const jwt = require("jsonwebtoken");
 const authorization = require("../../authorization");
 const get = Router.get(
-  "/",
+  "/items",
   authorization,
   query("filter").optional().isBoolean(),
   query("page").isNumeric(),

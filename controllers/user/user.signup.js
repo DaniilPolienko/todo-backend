@@ -7,7 +7,7 @@ const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
 const postUser = Router.post(
-  "/",
+  "/signup",
   check("firstName").isString(),
   check("lastName").isString(),
   check("email").isEmail().withMessage("Invalid email"),

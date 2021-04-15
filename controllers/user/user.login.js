@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
 const postUser = Router.post(
-  "/",
+  "/login",
   check("email").isEmail().withMessage("Invalid email"),
   check("password").isString().withMessage("Invalid email"),
 
@@ -26,7 +26,6 @@ const postUser = Router.post(
 
       if (!bcrypt.compareSync(req.body.password, user.password))
         throw new Error("Wrong username/password");
-      console.log(process.env.SECRET);
       const token = jwt.sign({ id: user.id }, process.env.SECRET, {
         expiresIn: 300,
       });

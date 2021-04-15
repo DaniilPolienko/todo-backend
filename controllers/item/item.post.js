@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const authorization = require("../../authorization");
 
 const post = Router.post(
-  "/",
+  "/item",
   authorization,
   body("message").isString(),
   async (req, res) => {
