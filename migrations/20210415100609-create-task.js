@@ -26,6 +26,13 @@ module.exports = {
         },
         defaultValue: false,
       },
+      uuid: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DataTypes.DATE,
