@@ -3,11 +3,11 @@ const Router = e.Router();
 const { body, validationResult } = require("express-validator");
 const { Task } = require("../../models");
 const authorization = require("../../middlewear/authorization");
-const access = require("../../middlewear/access");
+
 const post = Router.post(
   "/item",
   authorization,
-  access,
+
   body("message").isString(),
   async (req, res) => {
     try {
