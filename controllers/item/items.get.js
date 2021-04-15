@@ -3,10 +3,9 @@ const Router = e.Router();
 const { Task } = require("../../models");
 const { query, validationResult } = require("express-validator");
 const amountOfTasks = 5;
-const jwt = require("jsonwebtoken");
 const authorization = require("../../authorization");
 const get = Router.get(
-  "/",
+  "/items",
   authorization,
   query("filter").optional().isBoolean(),
   query("page").isNumeric(),
@@ -17,16 +16,13 @@ const get = Router.get(
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const token = req.headers.authorization;
-      const decoded = jwt.decode(token, { complete: true });
-      console.log(decoded.payload.id);
       const filter = {
-        where: { uuid: decoded.payload.id },
+        where: { uuid: res.locals.id },
         order: [],
       };
 
       if (req.query.filter)
-        filter.where = { done: req.query.filter, uuid: decoded.payload.id };
+        filter.where = { done: req.query.filter, uuid: res.locals.id };
       if (req.query.sort)
         filter.order.push([
           "createdAt",

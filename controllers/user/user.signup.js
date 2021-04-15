@@ -7,7 +7,7 @@ const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 
 const postUser = Router.post(
-  "/",
+  "/signup",
   check("firstName").isString(),
   check("lastName").isString(),
   check("email").isEmail().withMessage("Invalid email"),
@@ -33,7 +33,7 @@ const postUser = Router.post(
           password: hash,
         });
 
-        const token = jwt.sign({ id: userCreate.id }, "secret", {
+        const token = jwt.sign({ id: userCreate.id }, process.env.SECRET, {
           expiresIn: 300,
         });
 

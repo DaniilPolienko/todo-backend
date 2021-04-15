@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true,
         },
+        unique: false,
       },
       done: {
         type: DataTypes.BOOLEAN,
