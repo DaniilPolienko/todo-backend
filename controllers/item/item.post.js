@@ -2,7 +2,6 @@ const e = require("express");
 const Router = e.Router();
 const { body, validationResult } = require("express-validator");
 const { Task } = require("../../models");
-const jwt = require("jsonwebtoken");
 const authorization = require("../../authorization");
 
 const post = Router.post(
@@ -19,11 +18,8 @@ const post = Router.post(
       const task = await Task.findOne({ where: { message: req.body.message } });
       if (task) throw new Error("Task already exists");
 
-      const token = req.headers.authorization;
-      const decoded = jwt.decode(token, { complete: true });
-
       const item = await Task.create({
-        uuid: decoded.payload.id,
+        uuid: res.locals.id,
         message: req.body.message,
       });
       res.send(item);

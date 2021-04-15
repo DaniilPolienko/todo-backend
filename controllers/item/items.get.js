@@ -3,7 +3,6 @@ const Router = e.Router();
 const { Task } = require("../../models");
 const { query, validationResult } = require("express-validator");
 const amountOfTasks = 5;
-const jwt = require("jsonwebtoken");
 const authorization = require("../../authorization");
 const get = Router.get(
   "/items",
@@ -23,7 +22,7 @@ const get = Router.get(
       };
 
       if (req.query.filter)
-        filter.where = { done: req.query.filter, uuid: decoded.payload.id };
+        filter.where = { done: req.query.filter, uuid: res.locals.id };
       if (req.query.sort)
         filter.order.push([
           "createdAt",

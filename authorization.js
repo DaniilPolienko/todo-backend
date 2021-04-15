@@ -9,7 +9,6 @@ module.exports = function (req, res, next) {
   } catch (e) {
     return res.status(403).json({ error: e.message });
   }
-  console.log(payload);
   res.locals.id = payload.id;
   next();
 };

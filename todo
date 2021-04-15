@@ -1,6 +1,6 @@
 //Use controllers collector as in docs
 
-Set up sequelize env to work with the local database (use config.js instead of the config.json file)
+//Set up sequelize env to work with the local database (use config.js instead of the config.json file)
 Readme.md with the project setup process/description
 Remove redundant token checks in endpoints
 Task name must be unique only for user, not for the whole DB
