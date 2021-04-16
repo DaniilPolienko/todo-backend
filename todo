@@ -1,7 +1,7 @@
 //Use controllers collector as in docs
 
 //Set up sequelize env to work with the local database (use config.js instead of the config.json file)
-Readme.md with the project setup process/description
+//Readme.md with the project setup process/description
 //Remove redundant token checks in endpoints
 //Task name must be unique only for user, not for the whole DB
 Move password hashing into the User model (setters)
@@ -17,5 +17,5 @@ Move user checking from middlewear
 Forntend:
 //Add logged user name 
 //Use destruction instead (props);
-Axios request for both check end edit
-Do not repeat headers
+//Axios request for both check end edit
+//Do not repeat headers

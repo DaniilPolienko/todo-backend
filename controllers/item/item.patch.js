@@ -17,16 +17,19 @@ const patch = Router.patch(
   async (req, res) => {
     try {
       validate(req);
-      if (!req.body.task.done) {
+      if (req.body.task.message && !req.body.task.done) {
         const task = await Task.findOne({
           where: { message: req.body.task.message, uuid: res.locals.id },
         });
         if (task) throw new Error("Task already exists");
       }
+
       const itemToBeEdited = await Task.update(req.body.task, {
-        where: { id: req.body.task.id },
+        where: { id: req.body.task.id, uuid: res.locals.id },
         returning: true,
       });
+
+      if (itemToBeEdited[0] === 0) throw new Error("Forbidden");
       res.send(itemToBeEdited);
     } catch (error) {
       return res.status(400).json({ error: error.message });
