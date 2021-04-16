@@ -8,7 +8,7 @@ Move password hashing into the User model (setters)
 //Set different route names for single item request and for multiple item reequest
 //User should be able to work with his own messages
 //Move validation errors processing outside controllers (DRY)
-Move user checking from middlewear
+//Move user checking from middlewear
 
 
 
