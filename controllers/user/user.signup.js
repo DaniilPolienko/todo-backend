@@ -5,7 +5,7 @@ const { User } = require("../../models");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-
+const validate = require("../../validation");
 const postUser = Router.post(
   "/signup",
   check("firstName").isString(),
@@ -15,10 +15,7 @@ const postUser = Router.post(
 
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array()[0].msg });
-      }
+      validate(req);
 
       const checkIfExists = await User.findOne({
         where: { email: req.body.email },
@@ -33,9 +30,13 @@ const postUser = Router.post(
           password: hash,
         });
 
-        const token = jwt.sign({ id: userCreate.id }, process.env.SECRET, {
-          expiresIn: 300,
-        });
+        const token = jwt.sign(
+          { id: userCreate.id, firstName: userCreate.firstName },
+          process.env.SECRET,
+          {
+            expiresIn: 300,
+          }
+        );
 
         res.send({
           token,

@@ -12,6 +12,10 @@ const remove = Router.delete(
       const itemToBeDeleted = await Task.findOne({
         where: { id: req.query.id },
       });
+      if (!itemToBeDeleted) res.status(404).send("Not Found");
+      if (itemToBeDeleted.uuid !== res.locals.id)
+        res.status(403).send("Forbidden");
+
       itemToBeDeleted.destroy();
       res.send(itemToBeDeleted);
     } catch (err) {

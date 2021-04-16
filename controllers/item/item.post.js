@@ -1,21 +1,17 @@
 const e = require("express");
 const Router = e.Router();
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 const { Task } = require("../../models");
 const authorization = require("../../middlewear/authorization");
-
+const validate = require("../../validation");
 const post = Router.post(
   "/item",
   authorization,
 
-  body("message").isString(),
+  body("message").isString().withMessage("Message value must be string"),
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array()[0].msg });
-      }
-
+      validate(req);
       const task = await Task.findOne({
         where: { message: req.body.message, uuid: res.locals.id },
       });

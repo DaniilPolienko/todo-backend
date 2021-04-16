@@ -5,7 +5,7 @@ const { User } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
-
+const validate = require("../../validation");
 const postUser = Router.post(
   "/login",
   check("email").isEmail().withMessage("Invalid email"),
@@ -13,11 +13,7 @@ const postUser = Router.post(
 
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array()[0].msg });
-      }
-
+      validate(req);
       const user = await User.findOne({
         where: { email: req.body.email },
       });
@@ -26,9 +22,13 @@ const postUser = Router.post(
 
       if (!bcrypt.compareSync(req.body.password, user.password))
         throw new Error("Wrong username/password");
-      const token = jwt.sign({ id: user.id }, process.env.SECRET, {
-        expiresIn: 300,
-      });
+      const token = jwt.sign(
+        { id: user.id, firstName: user.firstName },
+        process.env.SECRET,
+        {
+          expiresIn: 300,
+        }
+      );
 
       res.json({
         token,

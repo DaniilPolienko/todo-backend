@@ -1,29 +1,28 @@
 const e = require("express");
 const Router = e.Router();
 const { Task } = require("../../models");
-const { query, validationResult } = require("express-validator");
+const { query } = require("express-validator");
 const amountOfTasks = 5;
 const authorization = require("../../middlewear/authorization");
-
+const validate = require("../../validation");
 const get = Router.get(
   "/items",
   authorization,
-  query("filter").optional().isBoolean(),
-  query("page").isNumeric(),
+  query("filter")
+    .optional()
+    .isBoolean()
+    .withMessage("Filter value must be boolean"),
+  query("page").isNumeric().withMessage("Page value must be numeric"),
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
+      validate(req);
 
       const filter = {
         where: { uuid: res.locals.id },
         order: [],
       };
 
-      if (req.query.filter)
-        filter.where = { done: req.query.filter, uuid: res.locals.id };
+      if (req.query.filter) filter.where.done = req.query.filter;
       if (req.query.sort)
         filter.order.push([
           "createdAt",
