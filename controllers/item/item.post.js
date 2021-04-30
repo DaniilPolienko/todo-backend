@@ -17,9 +17,14 @@ const post = Router.post(
       });
       if (task) throw new Error("Task already exists");
 
+      const amount = await Task.findAll({
+        where: { uuid: res.locals.id },
+      });
+
       const item = await Task.create({
         uuid: res.locals.id,
         message: req.body.message,
+        index: amount.length,
       });
       res.send(item);
     } catch (error) {

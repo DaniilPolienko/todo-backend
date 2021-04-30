@@ -17,15 +17,16 @@ const patch = Router.patch(
   async (req, res) => {
     try {
       validate(req);
-      if (req.body.task.message && !req.body.task.done) {
+      console.log(req.body);
+      if (req.body.todo.message && !req.body.todo.done) {
         const task = await Task.findOne({
-          where: { message: req.body.task.message, uuid: res.locals.id },
+          where: { message: req.body.todo.message, uuid: res.locals.id },
         });
         if (task) throw new Error("Task already exists");
       }
 
-      const itemToBeEdited = await Task.update(req.body.task, {
-        where: { id: req.body.task.id, uuid: res.locals.id },
+      const itemToBeEdited = await Task.update(req.body.todo, {
+        where: { id: req.body.todo.id, uuid: res.locals.id },
         returning: true,
       });
 

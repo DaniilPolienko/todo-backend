@@ -44,6 +44,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
+      index: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
     },
     {
       sequelize,

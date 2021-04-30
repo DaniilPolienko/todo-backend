@@ -26,7 +26,7 @@ const postUser = Router.post(
         { id: user.id, firstName: user.firstName },
         process.env.SECRET,
         {
-          expiresIn: 300,
+          expiresIn: 3000,
         }
       );
 

@@ -19,7 +19,7 @@ const get = Router.get(
 
       const filter = {
         where: { uuid: res.locals.id },
-        order: [],
+        order: ["index"],
       };
 
       if (req.query.filter) filter.where.done = req.query.filter;
@@ -35,7 +35,7 @@ const get = Router.get(
         where: filter.where,
         order: filter.order,
       });
-
+      console.log(items);
       res.send(items);
     } catch (err) {
       return res.status(400).send(err.message);
